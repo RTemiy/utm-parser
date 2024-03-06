@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Расшифровыватель UTM меток</title>
+    <style>
+        body {
+          background-color: black;
+          color: white;
+      }
+        button {
+          border-radius: 15px;
+          height: 25px;
+          border: 0;
+        }
+
+        input{
+          height: 25px;
+          border-radius: 15px;
+        }
+        p {
+          padding-bottom: 5px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+          text-wrap: normal;
+          overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <input type="text" id="utmInput" placeholder="Вставьте ссылку">
+    <button id="doButton">Разобрать</button>
+    <button id="clearButton">Очистить</button>
+</div>
+<div>
+    <div id="resultField">
+    </div>
+</div>
+</body>
+<script>
+  const input = document.body.querySelector('#utmInput')
+  const doButton = document.body.querySelector('#doButton')
+  const clearButton = document.body.querySelector('#clearButton')
+  const resultField = document.body.querySelector('#resultField')
+
+  function doUTM() {
+    const link = input.value
+    const url = link.split('?')[0]
+    const UTMs = link.split('?')[1].split('&')
+    resultField.innerHTML = ''
+    const urlText = document.createElement('p')
+    urlText.innerText = "Страница входа: " + url
+    resultField.appendChild(urlText)
+    UTMs.forEach(utm => {
+      const el = document.createElement('p')
+      el.innerText = utm
+      resultField.appendChild(el)
+    })
+  }
+
+  function clear() {
+    resultField.innerHTML = ''
+    input.value = ''
+  }
+
+  doButton.onclick = doUTM
+  clearButton.onclick = clear
+</script>
+</html>
