@@ -26,10 +26,29 @@
           border-radius: 15px;
         }
         p {
-          padding-bottom: 5px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
           text-wrap: normal;
           overflow-wrap: anywhere;
+        }
+
+        .container {
+          display: flex;
+          flex-direction: row;
+          justify-content: left;
+          align-items: center;
+          padding-bottom: 5px;
+          gap: 15px;
+        }
+
+        .container__title {
+          font-weight: 800;
+          background-color: darkslateblue;
+          padding: 10px;
+          border-radius: 15px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .container__value {
+
         }
     </style>
 </head>
@@ -55,14 +74,22 @@
     const url = link.split('?')[0]
     const UTMs = link.split('?')[1].split('&')
     resultField.innerHTML = ''
-    const urlText = document.createElement('p')
-    urlText.innerText = "Страница входа: " + url
-    resultField.appendChild(urlText)
+    let result = `
+    <div class="container">
+        <p class="container__title">Страница входа</p>
+        <p class="container__value">${url}</p>
+      </div>
+    `
     UTMs.forEach(utm => {
-      const el = document.createElement('p')
-      el.innerText = utm
-      resultField.appendChild(el)
+      const currentUTM = utm.split('=')
+      result+= `
+      <div class="container">
+        <p class="container__title">${currentUTM[0]}</p>
+        <p class="container__value">${currentUTM[1]}</p>
+      </div>
+      `
     })
+    resultField.innerHTML = result
   }
 
   function clear() {
