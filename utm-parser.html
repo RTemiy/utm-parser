@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="theme-color" content="black" />
     <meta charset="utf-8">
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <meta name="description" content="Расшифровыватель UTM меток"/>
     <meta property="og:title" content="Расшифровыватель UTM меток"/>
     <meta property="og:description" content="Расшифровыватель UTM меток"/>
@@ -18,17 +22,22 @@
       }
         button {
           border-radius: 15px;
-          height: 25px;
+          padding: 10px;
           border: 0;
         }
 
         input{
-          height: 25px;
+          padding: 10px;
           border-radius: 15px;
         }
         p {
           text-wrap: normal;
           overflow-wrap: anywhere;
+        }
+
+        .toolbar {
+          padding: 10px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .container {
@@ -42,19 +51,43 @@
 
         .container__title {
           font-weight: 800;
-          background-color: darkslateblue;
+          background-color: #3d8b47;
           padding: 10px;
           border-radius: 15px;
           border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        .unknown-color {
+          background-color: #4f4f4f;
+        }
+
         .container__value {
 
+        }
+
+        .show {
+           opacity: 0;
+           visibility: hidden;
+           animation: fade-in 0.5s ease 0.2s 1 normal forwards;
+         }
+
+        @keyframes fade-in {
+          0% {
+            opacity: 0;
+            transform: translateX(100%);
+            visibility: hidden;
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateX(0%);
+            visibility: visible;
+          }
         }
     </style>
 </head>
 <body>
-<div>
+<div class="toolbar">
     <input type="text" id="utmInput" placeholder="Вставьте ссылку">
     <button id="doButton">Разобрать</button>
     <button id="clearButton">Очистить</button>
@@ -74,19 +107,20 @@
     const link = input.value
     const url = link.split('?')[0]
     const UTMs = link.split('?')[1].split('&')
+    const defaultUTMNames = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
     resultField.innerHTML = ''
     let result = `
     <div class="container">
-        <p class="container__title">Страница входа</p>
-        <p class="container__value">${url}</p>
+        <p class="container__title show">Страница входа</p>
+        <p class="container__value show">${url}</p>
       </div>
     `
     UTMs.forEach(utm => {
       const currentUTM = utm.split('=')
       result+= `
       <div class="container">
-        <p class="container__title">${currentUTM[0]}</p>
-        <p class="container__value">${currentUTM[1]}</p>
+        <p class="container__title show ${defaultUTMNames.includes(currentUTM[0]) ? '' : 'unknown-color'}">${currentUTM[0]}</p>
+        <p class="container__value show">${currentUTM[1]}</p>
       </div>
       `
     })
